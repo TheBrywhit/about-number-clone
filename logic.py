@@ -1,7 +1,7 @@
 # some logic here
 import math
 b = 99999999999999
-
+n = 6
 
 def who_is_gosha():
     '''returns who is gosha'''
@@ -36,48 +36,57 @@ ala "шестизначное число"'''
     return len(str(n))
 
 
-def number_divisor_list(n: int) -> list:
-    '''returns list of divisors -- unoptimised'''
-    divisors_list = list(filter(lambda x: n % x == 0, range(1, int(n**.5)+1))) + [n]
+def number_divisors_list(n: int) -> list:
+    '''returns list of divisors'''
+    global divisors_list
+    divisors_list = list(filter(lambda x: n % x == 0, range(1, (n//2)+1))) + [n]
     return divisors_list
 
 
-def biggest_divisor_of_2(n: int) -> int:
-    '''returns the biggest divisor could be splitted by 2 -- unoptimised'''
-    divisors_list = number_divisor_list(n)
+def biggest_divisor_of_2(*args: int) -> int:
+    '''returns the biggest divisor could be splitted by 2'''
+    # divisors_list = number_divisors_list(n)
     return max(list(filter(lambda x: x % 2 == 0, divisors_list)))
 
 
-def number_of_divisors(n: int) -> int:
-    '''returns number of divisors -- unoptimised'''
-    divisors_number = len(list(filter(lambda x: n % x == 0, range(1, n))) + [n])
-    return divisors_number
+def number_of_divisors(*args: int) -> int:
+    '''returns number of divisors'''
+    # divisors_number = len(list(filter(lambda x: n % x == 0, range(1, n))) + [n])
+    return len(divisors_list)
 
 
-def is_prime(n: int) -> str:
+def sum_of_divisors(*args: int) -> int:
+    '''returns the sum of divisors'''
+    return sum(divisors_list)
+
+
+def is_prime(*args: int) -> str:
     '''returns if number is prime'''
-    if list(filter(lambda x: n % x == 0, range(2, n))):
-        return False
-    else:
+    if len(divisors_list) == 2:
         return True
+    else:
+        return False
 
 
 def is_semiprime(n: int) -> str:
     '''returns if number is semiprime'''
-    number_of_divisors = number_divisor_list(n)
-    del number_of_divisors[0]
-    del number_of_divisors[-1]
-    print(number_of_divisors)
-    if is_prime(n):
-        return 'Нет'
-    else:
-        if all(map(is_prime, number_of_divisors)):
-            return 'Да'
+    def deep_is_prime(n):
+        if list(filter(lambda x: n % x == 0, range(2, (n//2)+1))):
+            return False
         else:
-            return 'Нет'
+            return True
+
+    if is_prime(n):
+        return False
+    else:
+        if all(map(deep_is_prime, divisors_list[1:-1])):
+            return True
+        else:
+            return False
 
 
 def reversed_number(n: int) -> float:
+    '''returns 1/number'''
     return n ** -1
 
 
@@ -161,4 +170,11 @@ def ternary (n: int) -> int:
     while n:
         n, r = divmod(n, 3)
         nums.append(str(r))
-    return ''.join(reversed(nums)) 
+    return ''.join(reversed(nums))
+
+    
+
+
+    
+            
+        
